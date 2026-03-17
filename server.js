@@ -13,10 +13,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
     auth: {
         user: process.env.email,
         pass: process.env.password
+    },
+    family: 4,
+    tls: {
+        ciphers: 'SSLv3'
     }
 });
 
@@ -48,7 +54,13 @@ const sendEmail = async (type, res) => {
         return res.json({ success: true, message: 'Email sent successfully!' });
     } catch (error) {
         console.error("Error sending email:", error);
-        return res.status(500).json({ success: false, message: 'Failed to send email.', error: error.message });
+        return res.status(500).json({ 
+            success: false, 
+            message: 'Failed to send email.', 
+            error: error.message,
+            code: error.code,
+            command: error.command
+        });
     }
 };
 
