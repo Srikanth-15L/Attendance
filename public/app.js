@@ -1,5 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+
+    // ========== EmailJS Configuration ==========
+    // IMPORTANT: Replace these with your actual EmailJS credentials
+    const EMAILJS_PUBLIC_KEY = 'ufo1P3z1gyJ4jteWa';
+    const EMAILJS_SERVICE_ID = 'service_k5b8pzz';
+    const EMAILJS_TEMPLATE_ID = 'template_le6qlx7';
+
+    // Initialize EmailJS
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+
     // Time updating
     const updateTime = () => {
         const now = new Date();
@@ -17,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnPresent = document.getElementById('btn-present');
     const btnLogout = document.getElementById('btn-logout');
 
-    const handleAction = async (button, endpoint, successMessage) => {
+    const handleAction = async (button, type, successMessage) => {
         const textSpan = button.querySelector('.btn-text');
         const spinner = button.querySelector('.spinner');
         
@@ -27,22 +36,28 @@ document.addEventListener('DOMContentLoaded', () => {
         spinner.classList.remove('hidden');
 
         try {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
-            });
+            const timeStr = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
             
-            const data = await response.json();
-            
-            if (response.ok && data.success) {
-                showToast(successMessage);
-                // Optionally update the status indicator logic here
+            let subject, message;
+            if (type === 'login') {
+                subject = 'Login update';
+                message = `Dear HR Team,\n\nI am writing to confirm my attendance for Today \nEmp Id: CIN-73880\nLogin Time: ${timeStr}\n\n\n\nRegards,\nSrikanth Pandaraboina\nPhone: +91 8340032723\nEmail: srikanthpandaraboina38@gmail.com\n`;
             } else {
-                alert(`Error: ${data.message}`);
+                subject = 'Logout Update';
+                message = `Dear HR Team,\n\nI am writing to confirm my attendance for Today \nEmp Id: CIN-73880\nLogout Time: ${timeStr}\n\n\n\nRegards,\nSrikanth Pandaraboina\nPhone: +91 8340032723\nEmail: srikanthpandaraboina38@gmail.com\n`;
             }
+
+            await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                to_email: 'n.poojitha098@gmail.com',
+                from_name: 'Srikanth Pandaraboina',
+                subject: subject,
+                message: message
+            });
+
+            showToast(successMessage);
         } catch (error) {
             console.error('Error:', error);
-            alert('Failed to connect to the server.');
+            alert('Failed to send email: ' + (error.text || error.message || 'Unknown error'));
         } finally {
             // Restore UI state
             button.disabled = false;
@@ -52,11 +67,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     btnPresent.addEventListener('click', () => {
-        handleAction(btnPresent, '/api/login', 'Login email sent successfully!');
+        handleAction(btnPresent, 'login', 'Login email sent successfully!');
     });
 
     btnLogout.addEventListener('click', () => {
-        handleAction(btnLogout, '/api/logout', 'Logout email sent successfully!');
+        handleAction(btnLogout, 'logout', 'Logout email sent successfully!');
     });
 
     // Toast logic
