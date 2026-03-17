@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========== EmailJS Configuration ==========
     // IMPORTANT: Replace these with your actual EmailJS credentials
     const EMAILJS_PUBLIC_KEY = 'ufo1P3z1gyJ4jteWa';
-    const EMAILJS_SERVICE_ID = 'service_k5b8pzz';
+    const EMAILJS_SERVICE_ID = 'service_ktvmesy';
     const EMAILJS_TEMPLATE_ID = 'template_le6qlx7';
 
     // Initialize EmailJS
