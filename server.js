@@ -18,11 +18,18 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.email,
         pass: process.env.password
-    }
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000
 });
 
 const sendEmail = async (type, res) => {
     try {
+        if (!process.env.email || !process.env.password || !process.env.hr_email) {
+            throw new Error("Missing email credentials or HR email in environment variables.");
+        }
+
         const timeStr = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
         
         let subject, body;
