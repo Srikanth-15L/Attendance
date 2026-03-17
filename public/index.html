@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Automator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <div class="circle pulse"></div>
+                <h1>Daily Sync</h1>
+            </div>
+            <p class="subtitle">Automate your attendance workflow</p>
+        </header>
+
+        <main class="main-content">
+            <div class="card status-card">
+                <div class="status-indicator">
+                    <span id="current-time">--:--</span>
+                    <span id="current-date">Fetching date...</span>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="btn-present" class="btn btn-primary">
+                    <span class="btn-text">I am Present</span>
+                    <div class="spinner hidden"></div>
+                </button>
+                <button id="btn-logout" class="btn btn-secondary">
+                    <span class="btn-text">Logout</span>
+                    <div class="spinner hidden"></div>
+                </button>
+            </div>
+        </main>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast hidden">
+            <div class="toast-content">
+                <span class="icon">✅</span>
+                <span id="toast-message">Success!</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
